@@ -43,8 +43,8 @@ object DataFilter {
       *
       * You do not have to sort the output within the Spark program,
       * the submitter will take care of it.
-      * INPUT_FILE_PATH = "wasb://wikipediatraf@cmuccpublicdatasets.blob.core.windows.net/201611/"
-      * OUTPUT_FILE_PATH = "wasb:///filter-output"
+      * export INPUT_FILE_PATH="wasb://wikipediatraf@cmuccpublicdatasets.blob.core.windows.net/201611/"
+      * export  OUTPUT_FILE_PATH="wasb:///filter-output"
       *
       */
     val fileRDD = sc.hadoopFile[LongWritable, Text, TextInputFormat](sys.env("INPUT_FILE_PATH"))
@@ -84,7 +84,7 @@ object DataFilter {
       * Aggregate intermediateOutput, similar to how the reducer aggregated intermediate K,V pairs
       * into the final output in the MapReduce program.
       */
-    val output = intermediateOutput.map(invertKeys)
+    val output = intermediateOutput.map(invertKeys).groupByKey()
 //    output = intermediateOutput.map(rdd => rdd._2.map(titleCountTuple => mapTitleCount(titleCountTuple)))
 
     /**
@@ -186,8 +186,8 @@ object DataFilter {
   }
 
 
-  def invertKeys(x: (Int,Array[String])): (String, Array[String]) = {
-    (x._2(1), Array(x._1.toString,x._2(2)))
+  def invertKeys(x: (Int,Array[String])): (String, (Int, String)) = {
+    (x._2(1), (x._1,x._2(2)))
   }
 
 }
