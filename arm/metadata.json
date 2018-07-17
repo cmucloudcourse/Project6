@@ -1,0 +1,7 @@
+{
+  "itemDisplayName": "Deploy a Spark cluster in Azure HDInsight",
+  "description": "This template allows you to create a Spark cluster in Azure HDInsight. Reference: https://github.com/Azure/azure-quickstart-templates/tree/master/101-hdinsight-spark-linux",
+  "githubUsername": "CloudComputingCourse",
+  "summary": "Template creates an HDInsight Linux cluster in a virtual network",
+  "dateUpdated": "2018-07-01"
+}
