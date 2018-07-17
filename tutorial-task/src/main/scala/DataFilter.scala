@@ -187,7 +187,8 @@ object DataFilter {
 
 
   def invertKeys(x: (Int,Array[String])): (String, (Int, String)) = {
-    (x._2(1), (x._1,x._2(2)))
+    val tuple = (x._1,x._2(2))
+    (x._2(1), tuple)
   }
 
 }
