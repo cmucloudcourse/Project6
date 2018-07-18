@@ -13,7 +13,7 @@ object FollowerRDD {
     val data = followerRDD.map(line => (line.split("\t")(0), 1))
       .reduceByKey(_+_)
       .sortBy(line => line._2,false)
-      .top(100)
+      .take(100)
 
 
     sc.parallelize(data).sortBy(_._2, false).map(line => line._1+"\t"+line._2).saveAsTextFile("wasb:///followerRDD-output")
