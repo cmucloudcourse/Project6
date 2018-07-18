@@ -194,12 +194,12 @@ object DataFilter {
     (x._2(1), tuple)
   }
 
-def aggregateIterable(v: Iterable[(Int, Long)]) = {
-  val arr = new Array[Long](30)
-  for (x <- v) {
-    if(arr(x._1))
-  }
+//def aggregateIterable(v: Iterable[(Int, Long)]) = {
+//  val arr = new Array[Long](30)
+//  for (x <- v) {
+////    if (arr(x._1))
+//  }
+//}
   //return..
 }
 
-}
