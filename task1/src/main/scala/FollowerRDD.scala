@@ -12,7 +12,7 @@ object FollowerRDD {
 
     val data = followerRDD.map(line => (line.split("\t")(0), 1))
       .reduceByKey(_+_)
-      .sortBy(line => line._2,false)
+      .sortBy(line => line._2,false).collect()
       .take(100)
 
 
