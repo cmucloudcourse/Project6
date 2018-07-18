@@ -16,7 +16,7 @@ object FollowerRDD {
       .top(100)
 
 
-    sc.parallelize(data).sortBy(_._2).map(line => line._1+"\t"+line._2).saveAsTextFile("wasb:///followerRDD-output")
+    sc.parallelize(data).sortBy(_._2, false).map(line => line._1+"\t"+line._2).saveAsTextFile("wasb:///followerRDD-output")
   }
 
 }
