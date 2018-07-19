@@ -1,19 +1,27 @@
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.sql.functions._
+
 
 object FollowerDF {
 
   def main(args: Array[String]): Unit = {
+
+    val spark = SparkSession
+      .builder()
+      .appName("Spark DF Answer")
+      .config("spark.some.config.option", "Task1")
+      .getOrCreate()
+
     val conf = new SparkConf()
     val sc = new SparkContext(conf)
     val followerRDD = sc.textFile("wasb://spark@cmuccpublicdatasets.blob.core.windows.net/Graph")
 
-    val data = followerRDD.map(line => (line.split("\t")(1), 1))
-      .reduceByKey(_+_)
-      .sortBy(line => line._2,false).collect()
-      .take(100)
-
-
-    sc.parallelize(data).sortBy(_._2, false).map(line => line._1+"\t"+line._2).saveAsTextFile("wasb:///followerDF-output")
+    import spark.implicits._
+    val columns = Array("followee","follower")
+    val dataframe = followerRDD.map(line => (line.split("\t")(1), line.split("\t")(0))).toDF(columns: _*)
+    val finaldf = dataframe.groupBy("followee").count().orderBy(desc("count")).limit(100)
+    finaldf.write.format("parquet").save("wasb:///followerDF-output")
   }
 
 }
