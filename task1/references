@@ -24,7 +24,26 @@
       "url":"http://timepasstechies.com/spark-top-n-records-example-sample-data-using-rdd-dataframe/",
       "code":"Extract top 100 records from an RDD",
       "description":"Extract top 100 records from an RDD"
-    }            
+    },
+    {
+      "title":"Aggregate function in spark-sql not found",
+      "url":"https://stackoverflow.com/questions/31612463/aggregate-function-in-spark-sql-not-found",
+      "code":"Sort by desc",
+      "description":"Sort by desc"
+    },
+    {
+      "title":"Class DataFrame",
+      "url":"https://spark.apache.org/docs/1.5.1/api/java/org/apache/spark/sql/DataFrame.html",
+      "code":"To implement the common sql like functions that could be applied to a Spark DF",
+      "description":"To implement the common sql like functions that could be applied to a Spark DF"
+    },
+    {
+      "title":"Renaming column names of a DataFrame in Spark Scala",
+      "url":"https://stackoverflow.com/questions/35592917/renaming-column-names-of-a-dataframe-in-spark-scala",
+      "code":"To rename columns in the required format",
+      "description":"To rename columns in the required format"
+    }
+
   ],
   "collaborators":[
     {
