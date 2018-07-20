@@ -1,0 +1,55 @@
+{
+  "referenceGuide":"Cite all the reference sources in the required format. Proper citations will help you avoid unnecessary trouble but does not make it acceptable to copy code. Read the course and university policy statements in this regard. When working with others, limit the discussion to block diagrams and arrows. Do not look at another students' code. Read the JSON semantics and make use of JSON validator from the Internet if needed.",
+  "websites":[
+    {
+      "title":"How to reverse ordering for RDD.takeOrdered()?",
+      "url":"https://stackoverflow.com/questions/26387753/how-to-reverse-ordering-for-rdd-takeordered",
+      "code":"Reverse sorting based on numeric values",
+      "description":"Reverse sorting based on numeric values"
+    },
+    {
+      "title":"Chapter 4. Working with Key/Value Pairs",
+      "url":"https://www.safaribooksonline.com/library/view/learning-spark/9781449359034/ch04.html",
+      "code":"General Concepts of pair RDDs",
+      "description":"General Cocepts of pair RDDs"
+    },
+    {
+      "title":"SCALA CHEATSHEET",
+      "url":"https://docs.scala-lang.org/cheatsheets/",
+      "code":"Scala syntax and collections",
+      "description":"Scala syntax and collections"
+    },
+    {
+      "title":"spark top n records example in a sample data using rdd and dataframe",
+      "url":"http://timepasstechies.com/spark-top-n-records-example-sample-data-using-rdd-dataframe/",
+      "code":"Extract top 100 records from an RDD",
+      "description":"Extract top 100 records from an RDD"
+    },
+    {
+      "title":"Aggregate function in spark-sql not found",
+      "url":"https://stackoverflow.com/questions/31612463/aggregate-function-in-spark-sql-not-found",
+      "code":"Sort by desc",
+      "description":"Sort by desc"
+    },
+    {
+      "title":"Class DataFrame",
+      "url":"https://spark.apache.org/docs/1.5.1/api/java/org/apache/spark/sql/DataFrame.html",
+      "code":"To implement the common sql like functions that could be applied to a Spark DF",
+      "description":"To implement the common sql like functions that could be applied to a Spark DF"
+    },
+    {
+      "title":"Renaming column names of a DataFrame in Spark Scala",
+      "url":"https://stackoverflow.com/questions/35592917/renaming-column-names-of-a-dataframe-in-spark-scala",
+      "code":"To rename columns in the required format",
+      "description":"To rename columns in the required format"
+    }
+
+  ],
+  "collaborators":[
+    {
+      "andrewId":"<collaborator andrewId>",
+      "collaborationType":"<I helped X, X helped me, or we helped each other>",
+      "description":"<describe the idea discussed or shared>"
+    }
+  ]
+}
