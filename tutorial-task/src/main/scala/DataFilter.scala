@@ -100,8 +100,8 @@ object DataFilter {
 
     sc.parallelize(io2).sortBy(_._2._1).sortBy(_._1)
       .map(line => {
-        line._2._1+"\t"+line._1+"\t"+line._2._2.mkString("\t")
         println(line._2._1+"\t"+line._1+"\t"+line._2._2.mkString("\t"))
+        line._2._1+"\t"+line._1+"\t"+line._2._2.mkString("\t")
       })
       .saveAsTextFile(sys.env("OUTPUT_FILE_PATH"))
 
@@ -206,15 +206,14 @@ object DataFilter {
 
   def aggregateIterable(v: Iterable[(Int, Long)]) = {
     val arr = new Array[Long](30)
-    var totalcount = 0;
+    var totalcount = 0l
     println("Printing a test line *****")
     for (x <- v) {
       arr(x._1-1)= arr(x._1-1)+x._2
-      totalcount=totalcount+1
+      totalcount=totalcount+x._2
     }
     //return..
-//    if(totalcount >100000) (totalcount,arr) else null
-    (totalcount,arr)
+    if(totalcount >100000) (totalcount,arr) else null
   }
 
 }
