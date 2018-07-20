@@ -5,8 +5,12 @@ import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.mapred.{FileSplit, InputSplit, TextInputFormat}
 import org.apache.spark.rdd.{HadoopRDD, RDD}
 import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.log4j.Level
+import org.apache.log4j.Logger
 
 object DataFilter {
+
+  Logger.getLogger("org").setLevel(Level.INFO)
 
   private val prefixBlacklist = Set("special:", "media:", "talk:", "user:", "user_talk:", "wikipedia:",
     "wikipedia_talk:", "file:", "timedtext:", "file_talk:", "timedtext_talk:", "mediawiki:", "mediawiki_talk:",
@@ -23,6 +27,10 @@ object DataFilter {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf()
     val sc = new SparkContext(conf)
+
+    val log = LogManager.getRootLogger
+    log.setLevel(Level.WARN)
+
 
     /**
       * When Spark reads a file from HDFS (or WASB on HDInsight),
@@ -201,12 +209,11 @@ object DataFilter {
   def aggregateIterable(v: Iterable[(Int, Long)]) = {
     val arr = new Array[Long](30)
     var totalcount = 0;
+    println("Printing a test line *****")
     for (x <- v) {
-      println("Date : "+x._1)
       arr(x._1-1)= arr(x._1-1)+x._2
       totalcount=totalcount+1
     }
-
     //return..
     if(totalcount >1000000 ) (totalcount,arr) else null
   }
