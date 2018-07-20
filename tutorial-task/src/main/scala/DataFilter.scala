@@ -99,7 +99,10 @@ object DataFilter {
       */
 
     sc.parallelize(io2).sortBy(_._2._1).sortBy(_._1)
-      .map(line => line._2._1+"\t"+line._1+"\t"+line._2._2.mkString("\t"))
+      .map(line => {
+        line._2._1+"\t"+line._1+"\t"+line._2._2.mkString("\t")
+        println(line._2._1+"\t"+line._1+"\t"+line._2._2.mkString("\t"))
+      })
       .saveAsTextFile(sys.env("OUTPUT_FILE_PATH"))
 
     sc.stop()
@@ -211,6 +214,7 @@ object DataFilter {
     }
     //return..
 //    if(totalcount >100000) (totalcount,arr) else null
+    (totalcount,arr)
   }
 
 }
