@@ -85,8 +85,8 @@ object DataFilter {
       * into the final output in the MapReduce program.
       */
     val io1 = intermediateOutput.map(invertKeys).groupByKey()
-
-
+    val io2 = io1.mapValues(aggregateIterable).filter(x => x._2 != null)
+        .collect()
 
     //    output = intermediateOutput.map(rdd => rdd._2.map(titleCountTuple => mapTitleCount(titleCountTuple)))
 
@@ -94,7 +94,11 @@ object DataFilter {
       * The output path should be `wasb:///filter-output`.
       * This path should not exist.
       */
-    io1.saveAsTextFile(sys.env("OUTPUT_FILE_PATH"))
+
+    sc.parallelize(io2).sortBy(_._2._1).sortBy(_._1)
+      .map(line => line._2._1+"\t"+line._1+"\t"+line._2._2.mkString("\t"))
+      .saveAsTextFile(sys.env("OUTPUT_FILE_PATH"))
+
     sc.stop()
   }
 
@@ -196,10 +200,14 @@ object DataFilter {
 
 def aggregateIterable(v: Iterable[(Int, Long)]) = {
   val arr = new Array[Long](30)
+  var totalcount = 0;
   for (x <- v) {
-//    if(arr(x._1))
+    arr(x._1)= arr(x._1)+x._2
+    totalcount=totalcount+1
   }
+
   //return..
+  if(totalcount >1000000 ) (totalcount,arr) else null
 }
 
 }
