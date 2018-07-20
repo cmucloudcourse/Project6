@@ -98,12 +98,11 @@ object DataFilter {
       * This path should not exist.
       */
 
-    sc.parallelize(io2).sortBy(_._2._1).sortBy(_._1)
+    sc.parallelize(io2)
+      .sortBy(_._2._1, false)
       .map(line => {
-        println(line._2._1+"\t"+line._1+"\t"+line._2._2.mkString("\t"))
         line._2._1+"\t"+line._1+"\t"+line._2._2.mkString("\t")
-      })
-      .saveAsTextFile(sys.env("OUTPUT_FILE_PATH"))
+      }).saveAsTextFile(sys.env("OUTPUT_FILE_PATH"))
 
     sc.stop()
   }
