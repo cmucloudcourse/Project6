@@ -10,8 +10,6 @@ import org.apache.log4j.Logger
 
 object DataFilter {
 
-  Logger.getLogger("org").setLevel(Level.INFO)
-
   private val prefixBlacklist = Set("special:", "media:", "talk:", "user:", "user_talk:", "wikipedia:",
     "wikipedia_talk:", "file:", "timedtext:", "file_talk:", "timedtext_talk:", "mediawiki:", "mediawiki_talk:",
     "template:", "template_talk:", "help:", "help_talk:", "category:", "category_talk:", "portal:", "portal_talk:",
@@ -27,9 +25,6 @@ object DataFilter {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf()
     val sc = new SparkContext(conf)
-
-    val log = LogManager.getRootLogger
-    log.setLevel(Level.WARN)
 
 
     /**
