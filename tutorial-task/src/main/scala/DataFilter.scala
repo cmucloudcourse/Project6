@@ -210,7 +210,7 @@ object DataFilter {
       totalcount=totalcount+1
     }
     //return..
-    if(totalcount >1000000 ) (totalcount,arr) else null
+    if(totalcount >100000) (totalcount,arr) else null
   }
 
 }
