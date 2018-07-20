@@ -202,7 +202,7 @@ object DataFilter {
     val arr = new Array[Long](30)
     var totalcount = 0;
     for (x <- v) {
-      arr(x._1)= arr(x._1)+x._2
+      arr(x._1-1)= arr(x._1-1)+x._2
       totalcount=totalcount+1
     }
 
