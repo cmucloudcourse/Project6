@@ -42,8 +42,8 @@ object PageRank {
 
   def main(args: Array[String]) {
 
-    val INPUT_FILE = "wasb://spark@cmuccpublicdatasets.blob.core.windows.net/Graph"
-    val OUTPUT_FILE = "wasb:///pagerank-output"
+    val INPUT_FILE = sys.env("INPUT_FILE_PATH")//"wasb://spark@cmuccpublicdatasets.blob.core.windows.net/Graph"
+    val OUTPUT_FILE = sys.env("OUTPUT_FILE_PATH")//"wasb:///pagerank-output"
 
     val spark = SparkSession
       .builder
@@ -65,7 +65,7 @@ object PageRank {
 
     val links = lines.map{ s =>
       val parts = s.split("\t")
-      (parts(1), parts(0))
+      (parts(0), parts(1))
     }.distinct().groupByKey().cache()
 
     var ranks = links.mapValues(v => 1.0/numNodes)
@@ -74,16 +74,16 @@ object PageRank {
       val contribs = links.join(ranks).values.flatMap{ case (urls, rank) =>
         val size = urls.size
         if ( size == 0 )
-          numArr.map(url => (url, rank / size))
+          numArr.map(url => (url, rank / numArr.size))
         else
           urls.map(url => (url, rank / size))
       }
-      ranks = contribs.reduceByKey(_ + _).mapValues(0.15 + 0.85 * _)
+      ranks = contribs.reduceByKey(_ + _).mapValues((0.15/numNodes) + 0.85 * _)
     }
 
     val output = ranks.collect()
     output.foreach(tup => println(s"${tup._1} has rank:  ${tup._2} ."))
-
+//    spark.sparkContext.parallelize(output).saveAsTextFile(OUTPUT_FILE)
     spark.stop()
   }
 }
