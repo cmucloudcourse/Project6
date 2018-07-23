@@ -51,9 +51,10 @@ object PageRank {
     val iters = if (args.length > 1) args(1).toInt else 10
     val lines = spark.read.textFile(INPUT_FILE).rdd
 
-    val followee = lines.map(line => (line.split("\t")(0))).distinct()
-    val follower = lines.map(line => (line.split("\t")(1))).distinct()
+    val follower = lines.map(line => (line.split("\t")(0))).distinct()
+    val followee = lines.map(line => (line.split("\t")(1))).distinct()
 
+    val dangNodes = followee.subtract(follower).collect()
     val numArr = follower.union(followee).distinct().collect()
 
     val numNodes = numArr.length
@@ -80,8 +81,8 @@ object PageRank {
     }
 
     val output = ranks.collect()
-    output.foreach(tup => println(s"${tup._1} has rank:  ${tup._2} ."))
-//    spark.sparkContext.parallelize(output).saveAsTextFile(OUTPUT_FILE)
+//    output.foreach(tup => println(s"${tup._1} has rank:  ${tup._2} ."))
+    spark.sparkContext.parallelize(output).map(tup => tup._1+"\t"+tup._2)saveAsTextFile(OUTPUT_FILE)
     spark.stop()
   }
 }
