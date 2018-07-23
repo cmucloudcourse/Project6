@@ -42,6 +42,24 @@
       "url":"https://stackoverflow.com/questions/35592917/renaming-column-names-of-a-dataframe-in-spark-scala",
       "code":"To rename columns in the required format",
       "description":"To rename columns in the required format"
+    },
+    {
+      "title":"Submitting Applications",
+      "url":"https://spark.apache.org/docs/latest/submitting-applications.html",
+      "code":"To test local spark job with multiple executors",
+      "description":"To test local spark job with multiple executors"
+    },
+    {
+      "title":"How to convert a Scala Array/List/Seq (sequence) to string with mkString",
+      "url":"https://alvinalexander.com/scala/scala-convert-array-to-string-mkstring",
+      "code":"Convert an array to a tab separated string",
+      "description":"Convert an array to a tab separated string"
+    },
+    {
+      "title":"Scala console",
+      "url":"https://www.dotnetperls.com/println-scala",
+      "code":"printing lines to the std out for debugging",
+      "description":"printing lines to the std out for debugging"
     }
 
   ],
