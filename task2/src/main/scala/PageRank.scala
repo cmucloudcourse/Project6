@@ -85,6 +85,7 @@ object PageRank {
         }
       }
 
+      contribs.count()
       val danglingVal = dangling.value
 
       ranks = contribs.reduceByKey(_ + _).mapValues(v => (0.15 / numNodes) + 0.85 * (v + (danglingVal / numNodes)))
