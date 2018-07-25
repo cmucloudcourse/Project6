@@ -60,6 +60,42 @@
       "url":"https://www.dotnetperls.com/println-scala",
       "code":"printing lines to the std out for debugging",
       "description":"printing lines to the std out for debugging"
+    },
+    {
+      "title":"Spark Execution Model",
+      "url":"https://www.coursera.org/lecture/big-data-analysis/spark-execution-model-1YdTx",
+      "code":"General information about spark's executor framework",
+      "description":""General information about spark's executor framework"
+    },
+    {
+      "title":"distinct(), union() & more...",
+      "url":"http://apachesparkbook.blogspot.com/2015/11/distinct-union-more.html",
+      "code":"Information about various operation in RDDs",
+      "description":"Information about various operation in RDDs"
+    },
+    {
+      "title":"joshdevins/pagerank",
+      "url":"https://github.com/joshdevins/pagerank/blob/master/cassovary/src/main/scala/net.joshdevins.pagerank.cassovary/PageRank.scala",
+      "code":"General implementation of page rank",
+      "description":"General implementation of page rank"
+    },
+    {
+      "title":"PageRank",
+      "url":"https://www.dotnetperls.com/println-scala",
+      "code":"https://en.wikipedia.org/wiki/PageRank#Implementation",
+      "description":"Theoritical knowledge of page rank"
+    },
+    {
+      "title":"abbas-taher/pagerank-example-spark2.0-deep-dive",
+      "url":"https://github.com/abbas-taher/pagerank-example-spark2.0-deep-dive",
+      "code":"General understanding of how the official spark page rank example works",
+      "description":""General understanding of how the official spark page rank example works"
+    },
+    {
+      "title":"Spark PageRank",
+      "url":"https://blog.csdn.net/li385805776/article/details/19760663",
+      "code":"General information on Spark page rank with dangling nodes",
+      "description":"General information on Spark page rank with dangling nodes"
     }
 
   ],
