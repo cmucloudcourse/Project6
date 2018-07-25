@@ -51,33 +51,44 @@ object PageRank {
     val iters = if (args.length > 1) args(1).toInt else 10
     val lines = spark.read.textFile(INPUT_FILE).rdd
 
-    val follower = lines.map(line => (line.split("\t")(0))).distinct()
     val followee = lines.map(line => (line.split("\t")(1))).distinct()
-
+    val follower = lines.map(line => (line.split("\t")(0))).distinct()
     val dangNodes = followee.subtract(follower).collect()
-    val numArr = follower.union(followee).distinct().collect()
 
-    val numNodes = numArr.length
+    val dangArr = dangNodes.map(node => (node,Iterable[String]()))
 
-    println("Array of all the users is  "+numArr)
-    println("Total no of all the users is "+numNodes)
+    val dangRDD = spark.sparkContext.parallelize(dangArr)
+    val numNodes = 1006458
+
 
     val links = lines.map{ s =>
       val parts = s.split("\t")
       (parts(0), parts(1))
     }.distinct().groupByKey().cache()
 
-    var ranks = links.mapValues(v => 1.0/numNodes)
+    val finalLinks = links.union(dangRDD)
+
+    var ranks = finalLinks.mapValues(v => 1.0/numNodes)
+
 
     for (i <- 1 to iters) {
-      val contribs = links.join(ranks).values.flatMap{ case (urls, rank) =>
-        val size = urls.size
-        if ( size == 0 )
-          numArr.map(url => (url, rank / numArr.size))
-        else
-          urls.map(url => (url, rank / size))
+      val dangling = spark.sparkContext.doubleAccumulator
+      val contribs = finalLinks.join(ranks).values.flatMap {
+        case (urls, rank) => {
+          val size = urls.size
+          if (size == 0) {
+            dangling.add(rank)
+            List()
+          } else {
+            urls.map(url => (url, rank / size))
+          }
+        }
       }
-      ranks = contribs.reduceByKey(_ + _).mapValues((0.15/numNodes) + 0.85 * _)
+
+      val danglingVal = dangling.value
+
+      ranks = contribs.reduceByKey(_ + _).mapValues(v => (0.15 / numNodes) + 0.85 * (v + (danglingVal / numNodes)))
+
     }
 
     val output = ranks.collect()
