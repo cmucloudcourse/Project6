@@ -52,7 +52,7 @@ object PageRank {
       .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
       .config("spark.kryoserializer.buffer", "1024k")
       .config("spark.kryoserializer.buffer.max", "1024m")
-      .config("spark.kryo.registrationRequired", "true")
+      .config("spark.kryo.registrationRequired", "false")
       .getOrCreate()
 
 
