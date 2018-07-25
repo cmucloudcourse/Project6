@@ -16,6 +16,7 @@
  */
 
 // scalastyle:off println
+import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
 /**
@@ -40,13 +41,20 @@ object PageRank {
 
   def main(args: Array[String]) {
 
-    val INPUT_FILE = sys.env("INPUT_FILE_PATH")//"wasb://spark@cmuccpublicdatasets.blob.core.windows.net/Graph"
-    val OUTPUT_FILE = sys.env("OUTPUT_FILE_PATH")//"wasb:///pagerank-output"
+    val INPUT_FILE = sys.env("INPUT_FILE_PATH")
+    //"wasb://spark@cmuccpublicdatasets.blob.core.windows.net/Graph"
+    val OUTPUT_FILE = sys.env("OUTPUT_FILE_PATH") //"wasb:///pagerank-output"
 
     val spark = SparkSession
       .builder
       .appName("PageRank")
+      .config(getConfig)
+      .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+      .config("spark.kryoserializer.buffer", "1024k")
+      .config("spark.kryoserializer.buffer.max", "1024m")
+      .config("spark.kryo.registrationRequired", "true")
       .getOrCreate()
+
 
     val iters = if (args.length > 1) args(1).toInt else 10
     val lines = spark.read.textFile(INPUT_FILE).rdd
@@ -55,20 +63,20 @@ object PageRank {
     val follower = lines.map(line => (line.split("\t")(0))).distinct()
     val dangNodes = followee.subtract(follower).collect()
 
-    val dangArr = dangNodes.map(node => (node,Iterable[String]()))
+    val dangArr = dangNodes.map(node => (node, Iterable[String]()))
 
     val dangRDD = spark.sparkContext.parallelize(dangArr)
     val numNodes = 1006458
 
 
-    val links = lines.map{ s =>
+    val links = lines.map { s =>
       val parts = s.split("\t")
       (parts(0), parts(1))
-    }.distinct().groupByKey().cache()
+    }.distinct().groupByKey()
 
-    val finalLinks = links.union(dangRDD)
+    val finalLinks = links.union(dangRDD).cache()
 
-    var ranks = finalLinks.mapValues(v => 1.0/numNodes)
+    var ranks = finalLinks.mapValues(v => 1.0 / numNodes)
 
 
     for (i <- 1 to iters) {
@@ -88,13 +96,21 @@ object PageRank {
       contribs.count()
       val danglingVal = dangling.value
 
-      ranks = contribs.reduceByKey(_ + _).mapValues(v => (0.15 / numNodes) + 0.85 * (v + (danglingVal / numNodes)))
+      ranks = contribs.reduceByKey(_ + _, finalLinks.getNumPartitions).mapValues(v => (0.15 / numNodes) + 0.85 * (v + (danglingVal / numNodes)))
 
     }
 
     val output = ranks.collect()
-//    output.foreach(tup => println(s"${tup._1} has rank:  ${tup._2} ."))
-    spark.sparkContext.parallelize(output).map(tup => tup._1+"\t"+tup._2)saveAsTextFile(OUTPUT_FILE)
+    //    output.foreach(tup => println(s"${tup._1} has rank:  ${tup._2} ."))
+    spark.sparkContext.parallelize(output).map(tup => tup._1 + "\t" + tup._2) saveAsTextFile (OUTPUT_FILE)
     spark.stop()
+  }
+
+
+  private def getConfig = {
+    val conf = new SparkConf()
+    conf.registerKryoClasses(
+      Array(Class.forName("PageRank"))
+    )
   }
 }
