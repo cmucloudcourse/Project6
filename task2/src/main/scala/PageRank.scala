@@ -59,8 +59,14 @@ object PageRank {
     val iters = if (args.length > 1) args(1).toInt else 10
     val lines = spark.read.textFile(INPUT_FILE).rdd
 
-    val followee = lines.map(line => (line.split("\t")(1))).distinct()
-    val follower = lines.map(line => (line.split("\t")(0))).distinct()
+    val links = lines.map { s =>
+      val parts = s.split("\t")
+      (parts(0), parts(1))
+    }.distinct().groupByKey()
+
+
+    val followee = links.values.flatMap(v =>v ).distinct()
+    val follower = links.map(link => (link._1)).distinct()
     val dangNodes = followee.subtract(follower).collect()
 
     val dangArr = dangNodes.map(node => (node, Iterable[String]()))
@@ -69,10 +75,7 @@ object PageRank {
     val numNodes = 1006458
 
 
-    val links = lines.map { s =>
-      val parts = s.split("\t")
-      (parts(0), parts(1))
-    }.distinct().groupByKey()
+
 
     val finalLinks = links.union(dangRDD).cache()
 
