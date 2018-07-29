@@ -64,7 +64,7 @@ object PageRank {
     val links = lines.map { s =>
       val parts = s.split("\t")
       (parts(0), parts(1))
-    }.groupByKey(100)
+    }.groupByKey()
 
     val followee = links.values.flatMap(v =>v )
     val follower = links.map(link => (link._1))
