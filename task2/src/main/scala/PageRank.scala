@@ -52,7 +52,7 @@ object PageRank {
       .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
       .config("spark.kryoserializer.buffer", "1024k")
       .config("spark.kryoserializer.buffer.max", "1024m")
-      .config("spark.kryo.registrationRequired", "true")
+      .config("spark.kryo.registrationRequired", "false")
       .getOrCreate()
 
 
@@ -75,7 +75,9 @@ object PageRank {
 
     val dangRDD = spark.sparkContext.parallelize(dangArr)
 
-    val finalLinks = links.union(dangRDD).cache()
+    val finalLinks = links.union(dangRDD)
+
+    finalLinks.cache()
 
     val numNodes = 1006458
 
@@ -120,6 +122,8 @@ object PageRank {
       Array(
         classOf[scala.collection.mutable.WrappedArray.ofRef[_]],
         Class.forName("scala.reflect.ClassTag$$anon$1"),
+        Class.forName("org.apache.spark.util.collection.CompactBuffer"),
+        Class.forName("org.apache.spark.internal.io.FileCommitProtocol$TaskCommitMessage"),
         Class.forName("java.lang.Class"),
         Class.forName("PageRank")
       )
