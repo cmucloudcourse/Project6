@@ -127,6 +127,7 @@ object PageRank {
         Class.forName("[Lorg.apache.spark.util.collection.CompactBuffer;"),
         Class.forName("scala.reflect.ClassTag$$anon$1"),
         Class.forName("org.apache.spark.internal.io.FileCommitProtocol$TaskCommitMessage"),
+        Class.forName("scala.reflect.ManifestFactory$$anon$1"),
         Class.forName("java.lang.Class"),
         Class.forName("PageRank")
       )
