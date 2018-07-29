@@ -52,7 +52,6 @@ object PageRank {
       .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
       .config("spark.kryoserializer.buffer", "1024k")
       .config("spark.kryoserializer.buffer.max", "1024m")
-      .config("spark.kryo.registrationRequired", "false")
       .getOrCreate()
 
 
@@ -62,22 +61,24 @@ object PageRank {
     val links = lines.map { s =>
       val parts = s.split("\t")
       (parts(0), parts(1))
-    }.distinct().groupByKey()
+    }.groupByKey()
 
 
-    val followee = links.values.flatMap(v =>v ).distinct()
-    val follower = links.map(link => (link._1)).distinct()
+    val followee = links.values.flatMap(v =>v )
+    val follower = links.map(link => (link._1))
     val dangNodes = followee.subtract(follower).collect()
 
     val dangArr = dangNodes.map(node => (node, Iterable[String]()))
 
-    val dangRDD = spark.sparkContext.parallelize(dangArr)
+    val dangRDD = spark.sparkContext.parallelize(dangArr).cache()
+
+    val finalLinks = links.union(dangRDD).cache()
+
     val numNodes = 1006458
 
 
 
 
-    val finalLinks = links.union(dangRDD).cache()
 
     var ranks = finalLinks.mapValues(v => 1.0 / numNodes)
 
