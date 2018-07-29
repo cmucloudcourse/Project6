@@ -93,7 +93,7 @@ object PageRank {
 
     for (i <- 1 to iters) {
       val dangling = spark.sparkContext.doubleAccumulator
-      val contribs = finalLinks.join(ranks).values.flatMap {
+      val contribs = finalLinks.join(ranks,finalLinks.getNumPartitions).values.flatMap {
         case (urls, rank) => {
           val size = urls.size
           if (size == 0) {
@@ -114,7 +114,7 @@ object PageRank {
 
     val output = ranks.collect()
     //    output.foreach(tup => println(s"${tup._1} has rank:  ${tup._2} ."))
-    spark.sparkContext.parallelize(output).map(tup => tup._1 + "\t" + tup._2) saveAsTextFile (OUTPUT_FILE)
+    spark.sparkContext.parallelize(output).map(tup => tup._1 + "\t" + tup._2).saveAsTextFile (OUTPUT_FILE)
     spark.stop()
   }
 
