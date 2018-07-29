@@ -52,6 +52,7 @@ object PageRank {
       .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
       .config("spark.kryoserializer.buffer", "1024k")
       .config("spark.kryoserializer.buffer.max", "1024m")
+      .config("spark.kryo.registrationRequired", "true")
       .getOrCreate()
 
 
@@ -114,7 +115,7 @@ object PageRank {
   private def getConfig = {
     val conf = new SparkConf()
     conf.registerKryoClasses(
-      Array(Class.forName("PageRank"))
+      Array(classOf[scala.collection.mutable.WrappedArray.ofRef[_]],Class.forName("PageRank"))
     )
   }
 }
