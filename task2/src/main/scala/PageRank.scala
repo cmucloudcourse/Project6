@@ -122,7 +122,7 @@ object PageRank {
       Array(
         classOf[scala.collection.mutable.WrappedArray.ofRef[_]],
         Class.forName("scala.reflect.ClassTag$$anon$1"),
-        Class.forName("org.apache.spark.util.collection.CompactBuffer[]"),
+        Class.forName("org.apache.spark.util.collection.CompactBuffer"),
         Class.forName("org.apache.spark.internal.io.FileCommitProtocol$TaskCommitMessage"),
         Class.forName("java.lang.Class"),
         Class.forName("PageRank")
