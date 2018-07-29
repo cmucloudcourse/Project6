@@ -18,6 +18,9 @@
 // scalastyle:off println
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.util.collection.CompactBuffer
+
+import scala.reflect.ClassTag
 
 /**
   * Computes the PageRank of URLs from an input file. Input file should
@@ -121,8 +124,8 @@ object PageRank {
     conf.registerKryoClasses(
       Array(
         classOf[scala.collection.mutable.WrappedArray.ofRef[_]],
+        Class.forName("[Lorg.apache.spark.util.collection.CompactBuffer;"),
         Class.forName("scala.reflect.ClassTag$$anon$1"),
-        Class.forName("[Lorg.apache.spark.util.collection.CompactBuffer"),
         Class.forName("org.apache.spark.internal.io.FileCommitProtocol$TaskCommitMessage"),
         Class.forName("java.lang.Class"),
         Class.forName("PageRank")
