@@ -52,7 +52,7 @@ object PageRank {
       .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
       .config("spark.kryoserializer.buffer", "1024k")
       .config("spark.kryoserializer.buffer.max", "1024m")
-      .config("spark.kryo.registrationRequired", "false")
+      .config("spark.kryo.registrationRequired", "true")
       .getOrCreate()
 
 
@@ -122,7 +122,7 @@ object PageRank {
       Array(
         classOf[scala.collection.mutable.WrappedArray.ofRef[_]],
         Class.forName("scala.reflect.ClassTag$$anon$1"),
-        Class.forName("org.apache.spark.util.collection.CompactBuffer"),
+        Class.forName("org.apache.spark.util.collection.CompactBuffer[]"),
         Class.forName("org.apache.spark.internal.io.FileCommitProtocol$TaskCommitMessage"),
         Class.forName("java.lang.Class"),
         Class.forName("PageRank")
